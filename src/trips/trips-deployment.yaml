@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips-app
+  namespace: api-dev
+spec:
+  selector:
+    matchLabels:
+      app: trips-app
+  template:
+    metadata:
+      labels:
+        app: trips-app
+    spec:
+      containers:
+      - name: trips
+        image: registrybal1640.azurecr.io/trips
+        env:
+          - name: SQL_USER
+            value: "sqladminbAl1640"
+          - name: SQL_PASSWORD
+            value: "jM59p4Ul0"
+          - name: SQL_SERVER
+            value: "mydrivingDB.database.windows.net"
+          - name: SQL_DBNAME
+            value: "mydrivingDB"
+          - name: WEB_PORT
+            value: "80"
+          - name: WEB_SERVER_BASE_URI
+            value: "http://0.0.0.0"
+          - name: DOCS_URI
+            value: "http://localhost"
+          - name: DEBUG_LOGGING
+            value: "true"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips-app-service
+  namespace: api-dev
+spec:
+  selector:
+    app: trips-app
+  ports:
+  - port: 80
+    targetPort: 80
+
+        

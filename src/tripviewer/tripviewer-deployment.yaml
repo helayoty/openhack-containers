@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer-app
+  namespace: web-dev
+spec:
+  selector:
+    matchLabels:
+      app: tripviewer-app
+  template:
+    metadata:
+      labels:
+        app: tripviewer-app
+    spec:
+      containers:
+      - name: tripviewer
+        image: registrybal1640.azurecr.io/tripviewer
+        env:
+          - name: TEAM_API_ENDPOINT
+            value: "http://dining-tiger-nginx-ingress-controller.ingressbasic.svc.cluster.local"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer-app-service
+  namespace: web-dev
+spec:
+  selector:
+    app: tripviewer-app
+  ports:
+  - port: 80
+    targetPort: 80
+
+        

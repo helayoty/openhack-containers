@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-app
+  namespace: api-dev
+spec:
+  selector:
+    matchLabels:
+      app: poi-app
+  template:
+    metadata:
+      labels:
+        app: poi-app
+    spec:
+      containers:
+      - name: poi
+        image: registrybal1640.azurecr.io/poi
+        env:
+          - name: SQL_USER
+            value: "sqladminbAl1640"
+          - name: SQL_PASSWORD
+            value: "jM59p4Ul0"
+          - name: SQL_SERVER
+            value: "mydrivingDB.database.windows.net"
+          - name: SQL_DBNAME
+            value: "mydrivingDB"
+          - name: WEB_PORT
+            value: "80"
+          - name: WEB_SERVER_BASE_URI
+            value: "http://0.0.0.0"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi-app-service
+  namespace: api-dev
+spec:
+  selector:
+    app: poi-app
+  ports:
+  - port: 80
+    targetPort: 80
+
+        
