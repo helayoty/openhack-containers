@@ -21,7 +21,7 @@ spec:
           - name: SQL_PASSWORD
             value: "jM59p4Ul0"
           - name: SQL_SERVER
-            value: "mydrivingDB.database.windows.net"
+            value: "sqlserverbal1640.database.windows.net"
           - name: SQL_DBNAME
             value: "mydrivingDB"
           - name: WEB_PORT
